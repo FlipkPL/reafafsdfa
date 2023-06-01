@@ -25,3 +25,5 @@ function Take-Ownership {
     Set-Acl -Path $Path -AclObject $acl
 }
 
+
+powershell.exe -ExecutionPolicy Bypass -File "C:\SciezkaDoPliku\zmiana_wlasciciela.ps1"

